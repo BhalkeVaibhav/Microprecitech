@@ -43,6 +43,28 @@ document.addEventListener("DOMContentLoaded", () => {
     whatsappAction.setAttribute("aria-label", "WhatsApp +91 7767969592");
   }
 
+  // Reveal content as it enters the viewport without blocking the page.
+  const revealItems = document.querySelectorAll(
+    ".section, .darkband, .pagehero .container, .footergrid, .copyright"
+  );
+
+  revealItems.forEach((item) => item.classList.add("reveal"));
+
+  if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+  } else {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+  }
+
   // Send the enquiry through EmailJS without leaving the website.
   const enquiryForm = document.querySelector("#quote");
   const formStatus = document.querySelector("[data-form-status]");
