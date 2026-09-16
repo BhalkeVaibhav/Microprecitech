@@ -98,15 +98,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Show the supplied media filename so every gallery item is identifiable.
-  document.querySelectorAll(".gallery .item").forEach((item) => {
-    const media = item.querySelector("img, video");
-    const caption = item.querySelector(".caption");
-    const source = media?.tagName === "VIDEO" ? media.querySelector("source") : media;
-
-    if (source && caption) {
-      const fileName = decodeURIComponent(new URL(source.src, document.baseURI).pathname.split("/").pop());
-      caption.textContent = `${media.tagName === "VIDEO" ? "Video" : "Image"}: ${fileName}`;
-    }
-  });
 });
