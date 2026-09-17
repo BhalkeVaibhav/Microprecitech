@@ -53,58 +53,69 @@ document.addEventListener("DOMContentLoaded", () => {
     "Media/WhatsApp Image 2026-09-15 at 5.39.53 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.39.54 PM (1).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.39.54 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.55 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.39.56 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.39.57 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.57 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.58 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.58 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.58 PM (3).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.58 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.39.59 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.00 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.01 PM (1).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.01 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.01 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.03 PM (1).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.03 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.03 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.04 PM (1).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.04 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.04 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.05 PM (1).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.05 PM (2).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.05 PM (3).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.05 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.06 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.06 PM.jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.07 PM (1).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.07 PM (2).jpeg",
     "Media/WhatsApp Image 2026-09-15 at 5.40.07 PM.jpeg",
-    "Media/WhatsApp Image 2026-09-15 at 5.40.08 PM.jpeg",
-    "Media/Aluminium Extrusion & Machining.jpeg"
+    "Media/WhatsApp Image 2026-09-15 at 5.40.08 PM.jpeg"
   ];
 
   const videoItems = [
-    { src: "Media/WhatsApp Video 2026-09-15 at 5.39.56 PM.mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.44 PM.jpeg" },
-    { src: "Media/WhatsApp Video 2026-09-15 at 5.39.59 PM.mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.48 PM (1).jpeg" },
-    { src: "Media/WhatsApp Video 2026-09-15 at 5.40.02 PM.mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.50 PM.jpeg" },
-    { src: "Media/WhatsApp Video 2026-09-15 at 5.40.02 PM (1).mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.51 PM (1).jpeg" },
-    { src: "Media/WhatsApp Video 2026-09-15 at 5.40.02 PM (2).mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.53 PM.jpeg" }
+    "Media/WhatsApp Video 2026-09-15 at 5.39.56 PM.mp4",
+    "Media/WhatsApp Video 2026-09-15 at 5.39.59 PM (1).mp4",
+    "Media/WhatsApp Video 2026-09-15 at 5.40.02 PM (1).mp4"
   ];
 
-  const buildGallery = (rootId, items, type) => {
+  const buildGallery = (rootId, items) => {
     const root = document.getElementById(rootId);
     if (!root) return;
 
-    root.innerHTML = items.map((item) => {
-      if (type === "image") {
-        return `
-          <figure class="gallery-item">
-            <img src="${item}" alt="Manufacturing component" loading="lazy">
-          </figure>
-        `;
-      }
-
-      return `
-        <figure class="gallery-item video-item">
-          <video controls playsinline muted preload="metadata" poster="${item.poster}">
-            <source src="${item.src}" type="video/mp4">
-          </video>
-        </figure>
-      `;
-    }).join("");
+    root.innerHTML = items.map((item) => `
+      <figure class="gallery-item">
+        <img src="${item}" alt="Manufacturing component" loading="eager" decoding="async" onerror="this.closest('.gallery-item')?.remove()">
+      </figure>
+    `).join("");
   };
 
-  buildGallery("photoGallery", photoItems, "image");
-  buildGallery("videoGallery", videoItems, "video");
+  const buildVideoGallery = (rootId, items) => {
+    const root = document.getElementById(rootId);
+    if (!root) return;
+
+    root.innerHTML = items.map((item) => `
+      <figure class="gallery-item video-item">
+        <video controls playsinline preload="metadata" muted>
+          <source src="${item}" type="video/mp4">
+        </video>
+      </figure>
+    `).join("");
+  };
+
+  buildGallery("photoGallery", [...new Set(photoItems)]);
+  buildVideoGallery("videoGallery", videoItems);
 
   const revealItems = document.querySelectorAll(
     ".section, .darkband, .pagehero .container, .footergrid, .copyright"
