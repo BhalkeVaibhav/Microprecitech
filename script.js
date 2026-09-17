@@ -5,14 +5,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = location.pathname.split("/").pop() || "index.html";
 
-  // Highlight the current page in the navigation.
   document.querySelectorAll("[data-nav]").forEach((link) => {
     if (link.getAttribute("href") === currentPage) {
       link.classList.add("active");
     }
   });
 
-  // Mobile navigation toggle.
   const menuButton = document.querySelector(".menu");
   const navigation = document.querySelector(".links");
 
@@ -22,14 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Keep the copyright year current.
   const year = document.querySelector("[data-year]");
-
   if (year) {
     year.textContent = new Date().getFullYear();
   }
 
-  // Keep the primary call and WhatsApp actions aligned across every page.
   const callAction = document.querySelector(".floatbtn.call");
   const whatsappAction = document.querySelector(".floatbtn.wa");
 
@@ -43,7 +38,74 @@ document.addEventListener("DOMContentLoaded", () => {
     whatsappAction.setAttribute("aria-label", "WhatsApp +91 7767969592");
   }
 
-  // Reveal content as it enters the viewport without blocking the page.
+  const photoItems = [
+    "Media/WhatsApp Image 2026-09-15 at 5.39.44 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.48 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.48 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.49 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.49 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.50 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.50 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.51 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.51 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.52 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.53 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.53 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.54 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.54 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.56 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.57 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.39.59 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.00 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.01 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.03 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.04 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.04 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.05 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.05 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.05 PM (3).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.06 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.07 PM (1).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.07 PM (2).jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.07 PM.jpeg",
+    "Media/WhatsApp Image 2026-09-15 at 5.40.08 PM.jpeg",
+    "Media/Aluminium Extrusion & Machining.jpeg"
+  ];
+
+  const videoItems = [
+    { src: "Media/WhatsApp Video 2026-09-15 at 5.39.56 PM.mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.44 PM.jpeg" },
+    { src: "Media/WhatsApp Video 2026-09-15 at 5.39.59 PM.mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.48 PM (1).jpeg" },
+    { src: "Media/WhatsApp Video 2026-09-15 at 5.40.02 PM.mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.50 PM.jpeg" },
+    { src: "Media/WhatsApp Video 2026-09-15 at 5.40.02 PM (1).mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.51 PM (1).jpeg" },
+    { src: "Media/WhatsApp Video 2026-09-15 at 5.40.02 PM (2).mp4", poster: "Media/WhatsApp Image 2026-09-15 at 5.39.53 PM.jpeg" }
+  ];
+
+  const buildGallery = (rootId, items, type) => {
+    const root = document.getElementById(rootId);
+    if (!root) return;
+
+    root.innerHTML = items.map((item) => {
+      if (type === "image") {
+        return `
+          <figure class="gallery-item">
+            <img src="${item}" alt="Manufacturing component" loading="lazy">
+          </figure>
+        `;
+      }
+
+      return `
+        <figure class="gallery-item video-item">
+          <video controls playsinline muted preload="metadata" poster="${item.poster}">
+            <source src="${item.src}" type="video/mp4">
+          </video>
+        </figure>
+      `;
+    }).join("");
+  };
+
+  buildGallery("photoGallery", photoItems, "image");
+  buildGallery("videoGallery", videoItems, "video");
+
   const revealItems = document.querySelectorAll(
     ".section, .darkband, .pagehero .container, .footergrid, .copyright"
   );
@@ -65,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
     revealItems.forEach((item) => item.classList.add("is-visible"));
   }
 
-  // Send the enquiry through EmailJS without leaving the website.
   const enquiryForm = document.querySelector("#quote");
   const formStatus = document.querySelector("[data-form-status]");
 
